@@ -22,10 +22,10 @@ fun Navigation(navController: NavHostController) {
         composable(route = Screen.Add.route) {
             AddScreen()
         }
-        composable(route = Screen.Home.route) {
+        composable(route = Screen.Profile.route) {
             ProfileScreen()
         }
-        composable(route = Screen.Home.route) {
+        composable(route = Screen.Settings.route) {
             SettingsScreen()
         }
     }
