@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HabitTracker</string>
+    <string name="actual_app_name">Momentum: Build Habits</string>
 </resources>
