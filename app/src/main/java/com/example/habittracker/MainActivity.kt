@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -22,14 +22,17 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -56,24 +59,40 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScaffold() {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        topBar = { CenterAlignedTopAppBar(title = { Text(text = stringResource(id = R.string.actual_app_name), fontWeight = FontWeight.Bold) }) },
+        topBar = {
+                 if (currentRoute != Screen.Settings.route) {
+                     CenterAlignedTopAppBar(
+                         title = {
+                             Text(text = stringResource(id = R.string.actual_app_name), fontWeight = FontWeight.Bold)
+                         },
+                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                             titleContentColor = Color.White,
+                             containerColor = Color.Transparent
+                         )
+                     )
+                 }
+        },
         content = { Navigation(navController = navController) },
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = {
+            if (currentRoute != Screen.Settings.route) {
+                BottomBar(navController = navController, currentRoute)
+            }
+        }
     )
 }
 
 @Composable
-fun BottomBar(navController: NavController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+fun BottomBar(navController: NavController, currentRoute: String?) {
     val screens = listOf(
         Screen.Home,
         Screen.Stats,
         Screen.Add,
+        Screen.Community,
         Screen.Profile,
-        Screen.Settings,
     )
 
 
@@ -90,10 +109,11 @@ fun BottomBar(navController: NavController) {
                         icon = {
                             Icon(
                                 imageVector = if (currentRoute == screen.route) screen.selectedIcon else screen.icon,
-                                contentDescription = screen.title
+                                contentDescription = screen.title,
+                                modifier = Modifier.size(28.dp)
                             )
                         },
-                        label = { Text(text = screen.title) }
+                        label = { Text(text = screen.title, fontSize = 11.sp) }
                     )
                 } else Spacer(modifier = Modifier.weight(1f))
             }
@@ -101,7 +121,13 @@ fun BottomBar(navController: NavController) {
 
         FloatingActionButton(
             onClick = { navController.navigate(Screen.Add.route) },
-            content = { Icon(Icons.Filled.Add, contentDescription = "Add") },
+            content = {
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = "Add",
+                    modifier = Modifier.size(28.dp)
+                )
+            },
             shape = CircleShape
         )
     }

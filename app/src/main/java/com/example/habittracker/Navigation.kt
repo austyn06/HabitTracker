@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.habittracker.content.AddScreen
+import com.example.habittracker.content.CommunityScreen
 import com.example.habittracker.content.HomeScreen
 import com.example.habittracker.content.ProfileScreen
 import com.example.habittracker.content.SettingsScreen
@@ -22,11 +23,14 @@ fun Navigation(navController: NavHostController) {
         composable(route = Screen.Add.route) {
             AddScreen()
         }
+        composable(route = Screen.Community.route) {
+            CommunityScreen()
+        }
         composable(route = Screen.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
         }
         composable(route = Screen.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(navController = navController)
         }
     }
 }
