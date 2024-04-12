@@ -20,13 +20,13 @@ fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.purple_700))
+            .background(colorResource(id = R.color.backgroundColor))
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
             text = "Home View",
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = colorResource(id = R.color.textColorPrimary),
             modifier = Modifier.align(Alignment.CenterHorizontally),
             textAlign = TextAlign.Center,
             fontSize = 25.sp

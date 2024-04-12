@@ -3,6 +3,7 @@ package com.example.habittracker.ui.theme
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -10,69 +11,33 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF5E35B1),
-    onPrimary = Color.White,
-    secondary = Color(0xFFFFB74D),
-    onSecondary = Color.Black,
-    error = Color(0xFFD32F2F),
-    onError = Color.White,
-    background = Color(0xFFF5F5F5),
-    onBackground = Color.Black,
-    surface = Color.White,
-    onSurface = Color.Black,
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF5E35B1),
-    onPrimary = Color.White,
-    secondary = Color(0xFFFFB74D),
-    onSecondary = Color.Black,
-    error = Color(0xFFD32F2F),
-    onError = Color.White,
-    background = Color(0xFFF5F5F5),
-    onBackground = Color.Black,
-    surface = Color.White,
-    onSurface = Color.Black,
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40
 )
-
-object ThemePreferences {
-    private const val THEME_PREFS = "theme_preferences"
-    private const val DARK_THEME_ENABLED = "dark_theme_enabled"
-
-    fun isDarkThemeEnabled(context: Context): Boolean {
-        val prefs = context.getSharedPreferences(THEME_PREFS, Context.MODE_PRIVATE)
-        return prefs.getBoolean(DARK_THEME_ENABLED, false)
-    }
-
-    fun setDarkThemeEnabled(context: Context, isEnabled: Boolean) {
-        val prefs = context.getSharedPreferences(THEME_PREFS, Context.MODE_PRIVATE)
-        prefs.edit().putBoolean(DARK_THEME_ENABLED, isEnabled).apply()
-    }
-}
-
 
 @Composable
 fun HabitTrackerTheme(
-    darkTheme: Boolean = ThemePreferences.isDarkThemeEnabled(LocalContext.current),
-    // Dynamic color is available on Android 12+
+    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {

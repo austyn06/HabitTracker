@@ -31,18 +31,13 @@ sealed class Screen(var route: String, var icon: ImageVector, var selectedIcon: 
         Icons.Filled.Add
     )
 
-    object Community : Screen(
-        "community", Icons.Outlined.Groups,
-        Icons.Filled.Groups, "Community"
+    object Team : Screen(
+        "team", Icons.Outlined.Groups,
+        Icons.Filled.Groups, "Team"
     )
 
     object Profile : Screen(
         "profile", Icons.Outlined.Person,
         Icons.Filled.Person, "Profile"
-    )
-
-    object Settings : Screen(
-        "settings", Icons.Outlined.Settings,
-        Icons.Filled.Settings, "Settings"
     )
 }
