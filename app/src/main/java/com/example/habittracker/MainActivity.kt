@@ -1,8 +1,6 @@
 package com.example.habittracker
 
 import android.annotation.SuppressLint
-import android.app.UiModeManager
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,10 +15,11 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,18 +28,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.graphics.drawable.DrawableCompat.applyTheme
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.habittracker.ui.theme.HabitTrackerTheme
 import com.example.habittracker.ui.theme.HabitTrackerTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +46,7 @@ class MainActivity : ComponentActivity() {
             HabitTrackerTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = colorResource(id = R.color.white)
                 ) {
                     MainScaffold()
                 }
@@ -70,17 +65,17 @@ fun MainScaffold() {
 
     Scaffold(
         topBar = {
-                 if (currentRoute == Screen.Home.route) {
-                     CenterAlignedTopAppBar(
-                         title = {
-                             Text(text = stringResource(id = R.string.actual_app_name), fontWeight = FontWeight.Bold)
-                         },
-                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                             titleContentColor = colorResource(id = R.color.textColorPrimary),
-                             containerColor = Color.Transparent
-                         )
-                     )
-                 }
+            if (currentRoute == Screen.Home.route) {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(text = stringResource(id = R.string.actual_app_name), fontWeight = FontWeight.Bold)
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        titleContentColor = colorResource(id = R.color.different_white),
+                        containerColor = colorResource(id = R.color.darker_background)
+                    )
+                )
+            }
         },
         content = { Navigation(navController = navController) },
         bottomBar = {
@@ -99,12 +94,13 @@ fun BottomBar(navController: NavController, currentRoute: String?) {
         Screen.Profile,
     )
 
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        NavigationBar {
+        NavigationBar(
+            containerColor = colorResource(id = R.color.darker_background)
+        ) {
             screens.forEach { screen ->
                 if (screen != Screen.Add) {
                     NavigationBarItem(
@@ -117,7 +113,19 @@ fun BottomBar(navController: NavController, currentRoute: String?) {
                                 modifier = Modifier.size(28.dp)
                             )
                         },
-                        label = { Text(text = screen.title, fontSize = 11.sp) }
+//                        label = {
+//                            Text(
+//                                text = screen.title,
+//                                fontSize = 11.sp
+//                            )
+//                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = colorResource(id = R.color.darker_background),
+                            unselectedIconColor = colorResource(id = R.color.different_white),
+//                            selectedTextColor = colorResource(id = R.color.darker_background),
+//                            unselectedTextColor = colorResource(id = R.color.different_white),
+                            indicatorColor = colorResource(id = R.color.different_white)
+                        )
                     )
                 } else Spacer(modifier = Modifier.weight(1f))
             }
@@ -132,7 +140,10 @@ fun BottomBar(navController: NavController, currentRoute: String?) {
                     modifier = Modifier.size(28.dp)
                 )
             },
-            shape = CircleShape
+            elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 4.dp),
+            shape = CircleShape,
+            contentColor = colorResource(id = R.color.darker_background),
+            containerColor = colorResource(id = R.color.different_white)
         )
     }
 }
@@ -143,7 +154,7 @@ fun MainScaffoldPreview() {
     HabitTrackerTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = colorResource(id = R.color.backgroundColor)
+            color = colorResource(id = R.color.white)
         ) {
             MainScaffold()
         }
