@@ -70,7 +70,7 @@ fun MainScaffold() {
 
     Scaffold(
         topBar = {
-                 if (currentRoute != Screen.Profile.route) {
+                 if (currentRoute == Screen.Home.route) {
                      CenterAlignedTopAppBar(
                          title = {
                              Text(text = stringResource(id = R.string.actual_app_name), fontWeight = FontWeight.Bold)
