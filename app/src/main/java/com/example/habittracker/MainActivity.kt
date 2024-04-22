@@ -71,7 +71,7 @@ fun MainScaffold() {
                         Text(text = stringResource(id = R.string.actual_app_name), fontWeight = FontWeight.Bold)
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        titleContentColor = colorResource(id = R.color.different_white),
+                        titleContentColor = colorResource(id = R.color.white),
                         containerColor = colorResource(id = R.color.darker_background)
                     )
                 )
@@ -113,18 +113,10 @@ fun BottomBar(navController: NavController, currentRoute: String?) {
                                 modifier = Modifier.size(28.dp)
                             )
                         },
-//                        label = {
-//                            Text(
-//                                text = screen.title,
-//                                fontSize = 11.sp
-//                            )
-//                        },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = colorResource(id = R.color.darker_background),
-                            unselectedIconColor = colorResource(id = R.color.different_white),
-//                            selectedTextColor = colorResource(id = R.color.darker_background),
-//                            unselectedTextColor = colorResource(id = R.color.different_white),
-                            indicatorColor = colorResource(id = R.color.different_white)
+                            unselectedIconColor = colorResource(id = R.color.white),
+                            indicatorColor = colorResource(id = R.color.white)
                         )
                     )
                 } else Spacer(modifier = Modifier.weight(1f))
@@ -143,7 +135,7 @@ fun BottomBar(navController: NavController, currentRoute: String?) {
             elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 4.dp),
             shape = CircleShape,
             contentColor = colorResource(id = R.color.darker_background),
-            containerColor = colorResource(id = R.color.different_white)
+            containerColor = colorResource(id = R.color.white)
         )
     }
 }

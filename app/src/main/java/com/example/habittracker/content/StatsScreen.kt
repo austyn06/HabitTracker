@@ -1,5 +1,6 @@
 package com.example.habittracker.content
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,8 +21,10 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +38,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
 import com.example.habittracker.R
 
 @Composable
@@ -45,7 +49,7 @@ fun StatsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .background(colorResource(id = R.color.backgroundColor))
+            .background(colorResource(id = R.color.white))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -67,20 +71,23 @@ fun StatsScreen() {
                         modifier = Modifier.clickable { dropdownExpanded = !dropdownExpanded }
                     )
                 },
+                colors = TextFieldDefaults.colors(
+                    unfocusedIndicatorColor = colorResource(id = R.color.darker_background),
+                    unfocusedContainerColor = colorResource(id = R.color.white),
+                    focusedIndicatorColor = colorResource(id = R.color.darker_background),
+                    focusedContainerColor = colorResource(id = R.color.white)
+                ),
                 readOnly = true
             )
 
             DropdownMenu(
-                modifier = Modifier.width(135.dp),
+                modifier = Modifier
+                    .width(135.dp)
+                    .background(color = Color.LightGray),
                 expanded = dropdownExpanded,
                 onDismissRequest = { dropdownExpanded = false }
             ) {
-                val menuList = listOf(
-                    "Overall",
-                    "Daily",
-                    "Weekly",
-                    "Monthly"
-                )
+                val menuList = listOf("Overall", "Daily", "Weekly", "Monthly")
 
                 menuList.forEach { value ->
                     DropdownMenuItem(
@@ -92,12 +99,10 @@ fun StatsScreen() {
                             Text(
                                 text = value,
                                 fontSize = 18.sp,
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.Medium,
+                                color = colorResource(id = R.color.black)
                             )
-                        },
-                        colors = MenuDefaults.itemColors(
-                            textColor = colorResource(id = R.color.black)
-                        )
+                        }
                     )
                 }
             }
@@ -125,7 +130,7 @@ fun DailyProgressCircle(progress: Float, progressText: String) {
             modifier = Modifier.matchParentSize(),
             strokeWidth = 8.dp,
             trackColor = Color.LightGray,
-            color = colorResource(id = R.color.teal)
+            color = colorResource(id = R.color.darker_background)
         )
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -153,8 +158,8 @@ fun StatisticsCard(statName: String, statValue: String) {
             .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            contentColor = colorResource(id = R.color.black),
-            containerColor = colorResource(id = R.color.teal)
+            contentColor = colorResource(id = R.color.white),
+            containerColor = colorResource(id = R.color.darker_background)
         )
     ) {
         Column(

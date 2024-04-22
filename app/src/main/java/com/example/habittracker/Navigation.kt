@@ -26,7 +26,7 @@ fun Navigation(navController: NavHostController) {
             TeamScreen()
         }
         composable(route = Screen.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen()
         }
     }
 }

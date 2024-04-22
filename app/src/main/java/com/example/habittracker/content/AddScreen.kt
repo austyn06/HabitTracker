@@ -1,5 +1,6 @@
 package com.example.habittracker.content
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -31,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -81,8 +84,8 @@ fun AddScreen() {
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = colorResource(id = R.color.teal),
-                focusedLabelColor = colorResource(id = R.color.teal),
+                focusedIndicatorColor = colorResource(id = R.color.darker_background),
+                focusedLabelColor = colorResource(id = R.color.darker_background),
                 focusedTextColor = colorResource(id = R.color.black),
                 focusedContainerColor = colorResource(id = R.color.white),
                 unfocusedContainerColor = colorResource(id = R.color.white),
@@ -108,8 +111,8 @@ fun AddScreen() {
                 )
             },
             colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = colorResource(id = R.color.teal),
-                focusedLabelColor = colorResource(id = R.color.teal),
+                focusedIndicatorColor = colorResource(id = R.color.darker_background),
+                focusedLabelColor = colorResource(id = R.color.darker_background),
                 focusedTextColor = colorResource(id = R.color.black),
                 focusedContainerColor = colorResource(id = R.color.white),
                 unfocusedContainerColor = colorResource(id = R.color.white),
@@ -145,8 +148,8 @@ fun AddScreen() {
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = colorResource(id = R.color.teal),
-                    focusedLabelColor = colorResource(id = R.color.teal),
+                    focusedIndicatorColor = colorResource(id = R.color.darker_background),
+                    focusedLabelColor = colorResource(id = R.color.darker_background),
                     focusedTextColor = colorResource(id = R.color.black),
                     focusedContainerColor = colorResource(id = R.color.white),
                     unfocusedContainerColor = colorResource(id = R.color.white),
@@ -158,7 +161,9 @@ fun AddScreen() {
             DropdownMenu(
                 expanded = dropdownExpanded,
                 onDismissRequest = { dropdownExpanded = false },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Color.LightGray)
             ) {
                 val menuList = listOf(
                     "Overall",
@@ -177,12 +182,10 @@ fun AddScreen() {
                             Text(
                                 text = value,
                                 fontSize = 18.sp,
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.Medium,
+                                color = colorResource(id = R.color.black)
                             )
-                        },
-                        colors = MenuDefaults.itemColors(
-                            textColor = colorResource(id = R.color.black)
-                        )
+                        }
                     )
                 }
             }
@@ -197,7 +200,15 @@ fun AddScreen() {
 
             Switch(
                 checked = reminderOn,
-                onCheckedChange = { reminderOn = it }
+                onCheckedChange = { reminderOn = it },
+                colors = SwitchDefaults.colors(
+                    checkedBorderColor = Color.LightGray,
+                    checkedThumbColor = colorResource(id = R.color.white),
+                    checkedTrackColor = colorResource(id = R.color.darker_background),
+                    uncheckedBorderColor = colorResource(id = R.color.black),
+                    uncheckedThumbColor = colorResource(id = R.color.black),
+                    uncheckedTrackColor = colorResource(id = R.color.white)
+                )
             )
         }
 
@@ -209,8 +220,8 @@ fun AddScreen() {
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                contentColor = colorResource(id = R.color.black),
-                containerColor = colorResource(id = R.color.teal)
+                contentColor = colorResource(id = R.color.white),
+                containerColor = colorResource(id = R.color.darker_background)
             )
         ) {
             Icon(Icons.Filled.Save, contentDescription = "Save")

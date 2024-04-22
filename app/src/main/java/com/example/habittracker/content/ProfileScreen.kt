@@ -1,6 +1,7 @@
 package com.example.habittracker.content
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,11 +15,14 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,11 +33,11 @@ import com.example.habittracker.R
 import com.example.habittracker.ui.theme.HabitTrackerTheme
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .background(colorResource(id = R.color.backgroundColor))
+            .background(colorResource(id = R.color.white))
             .padding(16.dp)
     ) {
 
@@ -55,33 +59,15 @@ fun ProfileScreen(navController: NavController) {
             Text(
                 text = "John Doe",
                 fontWeight = FontWeight.Bold,
-//                color = colorResource(id = R.color.textColorPrimary),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
-
-//        Row(
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//
-//
-//            IconButton(
-//                onClick = { navController.navigate(Screen.Settings.route) },
-//                content = {
-//                    Icon(
-//                        Icons.Outlined.Settings,
-//                        contentDescription = "Settings",
-//                        tint = colorResource(id = R.color.textColorPrimary)
-//                    )
-//                }
-//            )
-//        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Divider(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-//            color = colorResource(id = R.color.colorAccent),
+            color = colorResource(id = R.color.darker_background),
             thickness = 2.dp
         )
 
@@ -91,13 +77,11 @@ fun ProfileScreen(navController: NavController) {
             Text(
                 text = "Email:",
                 fontWeight = FontWeight.Bold,
-//                color = colorResource(id = R.color.textColorPrimary),
                 modifier = Modifier.padding(end = 8.dp)
             )
 
             Text(
-                text = "johndoe@example.com",
-//                color = colorResource(id = R.color.textColorPrimary)
+                text = "johndoe@example.com"
             )
         }
 
@@ -105,13 +89,11 @@ fun ProfileScreen(navController: NavController) {
 
         Text(
             text = "About Me",
-            fontWeight = FontWeight.Bold,
-//            color = colorResource(id = R.color.textColorPrimary)
+            fontWeight = FontWeight.Bold
         )
 
         Text(
-            text = "This is a short bio or description about the user. Here you can add more details about hobbies, interests, or any other information.",
-//            color = colorResource(id = R.color.textColorSecondary)
+            text = "This is a short bio or description about the user. Here you can add more details about hobbies, interests, or any other information."
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -137,21 +119,30 @@ fun ThemeSettingItem() {
             )
         }
 
-        Switch(checked = false, onCheckedChange = {} )
+        Switch(
+            checked = false,
+            onCheckedChange = {},
+            colors = SwitchDefaults.colors(
+                checkedBorderColor = Color.LightGray,
+                checkedThumbColor = colorResource(id = R.color.white),
+                checkedTrackColor = colorResource(id = R.color.darker_background),
+                uncheckedBorderColor = colorResource(id = R.color.black),
+                uncheckedThumbColor = colorResource(id = R.color.black),
+                uncheckedTrackColor = colorResource(id = R.color.white)
+            )
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
-    val navController = rememberNavController()
-
     HabitTrackerTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            ProfileScreen(navController)
+            ProfileScreen()
         }
     }
 }
