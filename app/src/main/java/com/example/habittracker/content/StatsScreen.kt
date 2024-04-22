@@ -19,6 +19,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,9 +30,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.habittracker.R
 
 @Composable
 fun StatsScreen() {
@@ -48,11 +52,14 @@ fun StatsScreen() {
         Box {
             OutlinedTextField(
                 modifier = Modifier
-                    .width(130.dp)
+                    .width(135.dp)
                     .clickable { dropdownExpanded = true },
                 value = selected,
                 onValueChange = {},
-                label = {},
+                textStyle = TextStyle(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp
+                ),
                 trailingIcon = {
                     Icon(
                         imageVector = if (dropdownExpanded) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown,
@@ -64,7 +71,7 @@ fun StatsScreen() {
             )
 
             DropdownMenu(
-                modifier = Modifier.width(130.dp),
+                modifier = Modifier.width(135.dp),
                 expanded = dropdownExpanded,
                 onDismissRequest = { dropdownExpanded = false }
             ) {
@@ -81,11 +88,16 @@ fun StatsScreen() {
                             selected = value
                             dropdownExpanded = false
                         },
-                        text = { Text(text = value) },
-//                        colors = MenuDefaults.itemColors(
-//                            textColor = colorResource(id = R.color.textColorPrimary),
-//
-//                        ),
+                        text = {
+                            Text(
+                                text = value,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        },
+                        colors = MenuDefaults.itemColors(
+                            textColor = colorResource(id = R.color.black)
+                        )
                     )
                 }
             }
@@ -113,7 +125,7 @@ fun DailyProgressCircle(progress: Float, progressText: String) {
             modifier = Modifier.matchParentSize(),
             strokeWidth = 8.dp,
             trackColor = Color.LightGray,
-//            color = colorResource(id = R.color.colorAccent)
+            color = colorResource(id = R.color.teal)
         )
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -121,13 +133,13 @@ fun DailyProgressCircle(progress: Float, progressText: String) {
                 text = progressText,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-//                color = colorResource(id = R.color.textColorPrimary)
+                color = colorResource(id = R.color.black)
             )
             Text(
                 text = "Completed",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-//                color = colorResource(id = R.color.textColorPrimary)
+                color = colorResource(id = R.color.black)
             )
         }
     }
@@ -140,9 +152,10 @@ fun StatisticsCard(statName: String, statValue: String) {
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-//        colors = CardDefaults.cardColors(
-//            containerColor = colorResource(id = R.color.colorAccent)
-//        )
+        colors = CardDefaults.cardColors(
+            contentColor = colorResource(id = R.color.black),
+            containerColor = colorResource(id = R.color.teal)
+        )
     ) {
         Column(
             modifier = Modifier
@@ -152,14 +165,12 @@ fun StatisticsCard(statName: String, statValue: String) {
             Text(
                 text = statName,
                 fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
-//                color = colorResource(id = R.color.textColorPrimary)
+                fontSize = 18.sp
             )
             Text(
                 text = statValue,
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-//                color = colorResource(id = R.color.colorPrimaryDark)
+                fontSize = 24.sp
             )
         }
     }

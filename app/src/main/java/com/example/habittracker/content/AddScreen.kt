@@ -15,12 +15,15 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,11 +31,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.habittracker.R
 import com.example.habittracker.ui.theme.HabitTrackerTheme
 
 @Composable
@@ -46,7 +52,6 @@ fun AddScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .background(colorResource(id = R.color.backgroundColor))
             .padding(start = 16.dp, end = 16.dp),
         verticalArrangement = Arrangement.Center
     ) {
@@ -54,7 +59,7 @@ fun AddScreen() {
             text = "Add New Habit",
             fontWeight = FontWeight.Bold,
             fontSize = 25.sp,
-//            color = colorResource(id = R.color.textColorPrimary),
+            color = colorResource(id = R.color.black),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -64,7 +69,25 @@ fun AddScreen() {
             modifier = Modifier.fillMaxWidth(),
             value = habitName,
             onValueChange = { habitName = it },
-            label = { Text("Habit Name") }
+            textStyle = TextStyle(
+                fontWeight = FontWeight.Medium,
+                fontSize = 18.sp
+            ),
+            label = {
+                Text(
+                    text = "Habit Name",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = colorResource(id = R.color.teal),
+                focusedLabelColor = colorResource(id = R.color.teal),
+                focusedTextColor = colorResource(id = R.color.black),
+                focusedContainerColor = colorResource(id = R.color.white),
+                unfocusedContainerColor = colorResource(id = R.color.white),
+                unfocusedTextColor = colorResource(id = R.color.black)
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -73,7 +96,25 @@ fun AddScreen() {
             modifier = Modifier.fillMaxWidth(),
             value = habitDescription,
             onValueChange = { habitDescription = it },
-            label = { Text("Description") }
+            textStyle = TextStyle(
+                fontWeight = FontWeight.Medium,
+                fontSize = 18.sp
+            ),
+            label = {
+                Text(
+                    text = "Habit Description",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = colorResource(id = R.color.teal),
+                focusedLabelColor = colorResource(id = R.color.teal),
+                focusedTextColor = colorResource(id = R.color.black),
+                focusedContainerColor = colorResource(id = R.color.white),
+                unfocusedContainerColor = colorResource(id = R.color.white),
+                unfocusedTextColor = colorResource(id = R.color.black)
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -83,9 +124,19 @@ fun AddScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { dropdownExpanded = true },
-                value = interval.ifEmpty { "Select Interval" },
+                value = interval.ifEmpty { "Selected Interval" },
                 onValueChange = { },
-                label = { Text("Interval") },
+                textStyle = TextStyle(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp
+                ),
+                label = {
+                    Text(
+                        text = "Interval",
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 18.sp
+                    )
+                },
                 trailingIcon = {
                     Icon(
                         imageVector = if (dropdownExpanded) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown,
@@ -93,8 +144,15 @@ fun AddScreen() {
                         modifier = Modifier.clickable { dropdownExpanded = !dropdownExpanded }
                     )
                 },
-                readOnly = true,
-                singleLine = true
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = colorResource(id = R.color.teal),
+                    focusedLabelColor = colorResource(id = R.color.teal),
+                    focusedTextColor = colorResource(id = R.color.black),
+                    focusedContainerColor = colorResource(id = R.color.white),
+                    unfocusedContainerColor = colorResource(id = R.color.white),
+                    unfocusedTextColor = colorResource(id = R.color.black)
+                ),
+                readOnly = true
             )
 
             DropdownMenu(
@@ -102,27 +160,31 @@ fun AddScreen() {
                 onDismissRequest = { dropdownExpanded = false },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                DropdownMenuItem(
-                    onClick = {
-                        interval = "Daily"
-                        dropdownExpanded = false
-                    },
-                    text = { Text("Daily") }
+                val menuList = listOf(
+                    "Overall",
+                    "Daily",
+                    "Weekly",
+                    "Monthly"
                 )
-                DropdownMenuItem(
-                    onClick = {
-                        interval = "Weekly"
-                        dropdownExpanded = false
-                    },
-                    text = { Text("Weekly") }
-                )
-                DropdownMenuItem(
-                    onClick = {
-                        interval = "Monthly"
-                        dropdownExpanded = false
-                    },
-                    text = { Text("Monthly") }
-                )
+
+                menuList.forEach { value ->
+                    DropdownMenuItem(
+                        onClick = {
+                            interval = value
+                            dropdownExpanded = false
+                        },
+                        text = {
+                            Text(
+                                text = value,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        },
+                        colors = MenuDefaults.itemColors(
+                            textColor = colorResource(id = R.color.black)
+                        )
+                    )
+                }
             }
         }
 
@@ -145,10 +207,19 @@ fun AddScreen() {
             onClick = {
                 // Handle save action here
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = colorResource(id = R.color.black),
+                containerColor = colorResource(id = R.color.teal)
+            )
         ) {
             Icon(Icons.Filled.Save, contentDescription = "Save")
-            Text("Save", modifier = Modifier.padding(start = 8.dp))
+            Text(
+                text = "Save",
+                modifier = Modifier.padding(start = 8.dp),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 }
