@@ -4,17 +4,14 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -26,21 +23,25 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.habittracker.content.AddScreen
+import com.example.habittracker.model.HabitViewModel
 import com.example.habittracker.ui.theme.HabitTrackerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val habitViewModel = HabitViewModel(application)
 
         setContent {
             HabitTrackerTheme {
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.white)
                 ) {
-                    MainScaffold()
+                    MainScaffold(habitViewModel = habitViewModel)
                 }
             }
         }
@@ -58,10 +59,18 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScaffold() {
+fun MainScaffold(habitViewModel: HabitViewModel) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val setShowDialog = remember { mutableStateOf(false) }
+    if (setShowDialog.value) {
+        AddScreen(
+            habitViewModel = habitViewModel,
+            setShowDialog = { setShowDialog.value = it }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -77,9 +86,28 @@ fun MainScaffold() {
                 )
             }
         },
-        content = { Navigation(navController = navController) },
+        content = { Navigation(navController = navController, habitViewModel = habitViewModel) },
         bottomBar = {
             BottomBar(navController = navController, currentRoute)
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = {
+                    setShowDialog.value = true
+                },
+                icon = {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = "Add",
+                        modifier = Modifier.size(16.dp)
+                    )
+                },
+                text = { Text(text = "Add Habit", fontSize = 12.sp) },
+                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 4.dp),
+                shape = CircleShape,
+                contentColor = colorResource(id = R.color.white),
+                containerColor = colorResource(id = R.color.darker_background)
+            )
         }
     )
 }
@@ -89,66 +117,32 @@ fun BottomBar(navController: NavController, currentRoute: String?) {
     val screens = listOf(
         Screen.Home,
         Screen.Stats,
-        Screen.Add,
-        Screen.Team,
-        Screen.Profile,
+        Screen.Profile
     )
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        NavigationBar(
-            containerColor = colorResource(id = R.color.darker_background)
-        ) {
-            screens.forEach { screen ->
-                if (screen != Screen.Add) {
-                    NavigationBarItem(
-                        selected = currentRoute == screen.route,
-                        onClick = { navController.navigate(screen.route) },
-                        icon = {
-                            Icon(
-                                imageVector = if (currentRoute == screen.route) screen.selectedIcon else screen.icon,
-                                contentDescription = screen.title,
-                                modifier = Modifier.size(28.dp)
-                            )
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = colorResource(id = R.color.darker_background),
-                            unselectedIconColor = colorResource(id = R.color.white),
-                            indicatorColor = colorResource(id = R.color.white)
-                        )
+    NavigationBar(containerColor = colorResource(id = R.color.darker_background)) {
+        screens.forEach { screen ->
+            NavigationBarItem(
+                selected = currentRoute == screen.route,
+                onClick = { navController.navigate(screen.route) },
+                label = {
+                    Text(text = screen.title, fontSize = 11.sp)
+                },
+                icon = {
+                    Icon(
+                        imageVector = if (currentRoute == screen.route) screen.selectedIcon else screen.icon,
+                        contentDescription = screen.title,
+                        modifier = Modifier.size(24.dp)
                     )
-                } else Spacer(modifier = Modifier.weight(1f))
-            }
-        }
-
-        FloatingActionButton(
-            onClick = { navController.navigate(Screen.Add.route) },
-            content = {
-                Icon(
-                    Icons.Default.Add,
-                    contentDescription = "Add",
-                    modifier = Modifier.size(28.dp)
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedTextColor = colorResource(id = R.color.white),
+                    selectedIconColor = colorResource(id = R.color.darker_background),
+                    unselectedTextColor = colorResource(id = R.color.white),
+                    unselectedIconColor = colorResource(id = R.color.white),
+                    indicatorColor = colorResource(id = R.color.white)
                 )
-            },
-            elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 4.dp),
-            shape = CircleShape,
-            contentColor = colorResource(id = R.color.darker_background),
-            containerColor = colorResource(id = R.color.white)
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainScaffoldPreview() {
-    HabitTrackerTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = colorResource(id = R.color.white)
-        ) {
-            MainScaffold()
+            )
         }
     }
 }

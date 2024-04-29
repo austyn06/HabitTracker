@@ -1,18 +1,12 @@
 package com.example.habittracker
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.InsertChart
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Groups
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.InsertChartOutlined
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screen(var route: String, var icon: ImageVector, var selectedIcon: ImageVector, var title: String = "") {
@@ -24,16 +18,6 @@ sealed class Screen(var route: String, var icon: ImageVector, var selectedIcon: 
     object Stats : Screen(
         "stats", Icons.Outlined.InsertChartOutlined,
         Icons.Filled.InsertChart, "Stats"
-    )
-
-    object Add : Screen(
-        "add", Icons.Outlined.Add,
-        Icons.Filled.Add
-    )
-
-    object Team : Screen(
-        "team", Icons.Outlined.Groups,
-        Icons.Filled.Groups, "Team"
     )
 
     object Profile : Screen(
