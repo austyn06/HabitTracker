@@ -1,6 +1,7 @@
 package com.example.habittracker
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.white)
                 ) {
-                    MainScaffold(habitViewModel = habitViewModel)
+                    MainScaffold(habitViewModel = habitViewModel, context = this)
                 }
             }
         }
@@ -59,7 +60,7 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScaffold(habitViewModel: HabitViewModel) {
+fun MainScaffold(habitViewModel: HabitViewModel, context: Context) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -68,7 +69,8 @@ fun MainScaffold(habitViewModel: HabitViewModel) {
     if (setShowDialog.value) {
         AddScreen(
             habitViewModel = habitViewModel,
-            setShowDialog = { setShowDialog.value = it }
+            setShowDialog = { setShowDialog.value = it },
+            context = context
         )
     }
 
@@ -86,7 +88,7 @@ fun MainScaffold(habitViewModel: HabitViewModel) {
                 )
             }
         },
-        content = { Navigation(navController = navController, habitViewModel = habitViewModel) },
+        content = { Navigation(navController = navController, habitViewModel = habitViewModel, context = context) },
         bottomBar = {
             BottomBar(navController = navController, currentRoute)
         },
@@ -146,8 +148,3 @@ fun BottomBar(navController: NavController, currentRoute: String?) {
         }
     }
 }
-
-// Toast for reminders
-//fun showReminderToast(context: Context, message: String) {
-//    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-//}

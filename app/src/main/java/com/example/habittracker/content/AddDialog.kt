@@ -1,5 +1,7 @@
 package com.example.habittracker.content
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +22,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -48,7 +49,7 @@ import com.example.habittracker.data.entities.Habit
 import com.example.habittracker.model.HabitViewModel
 
 @Composable
-fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) {
+fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, context: Context) {
     var habitName by remember { mutableStateOf(TextFieldValue()) }
     var habitDescription by remember { mutableStateOf(TextFieldValue()) }
     var interval by remember { mutableStateOf("") }
@@ -251,9 +252,11 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) 
 
                                 habitViewModel.insertHabit(habit)
                                 setShowDialog(false)
+                            } else {
+                                Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
                             }
 
-
+                            Toast.makeText(context, "Habit created successfully", Toast.LENGTH_SHORT).show()
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
@@ -273,11 +276,3 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) 
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun AddScreenPreview() {
-//    HabitTrackerTheme {
-//        AddScreen()
-//    }
-//}

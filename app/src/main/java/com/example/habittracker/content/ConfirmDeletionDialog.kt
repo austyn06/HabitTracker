@@ -1,5 +1,7 @@
 package com.example.habittracker.content
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -10,7 +12,7 @@ import androidx.compose.ui.res.colorResource
 import com.example.habittracker.R
 
 @Composable
-fun ConfirmDeletionDialog(setShowDialog: (Boolean) -> Unit, onConfirm: () -> Unit) {
+fun ConfirmDeletionDialog(setShowDialog: (Boolean) -> Unit, onConfirm: () -> Unit, context: Context) {
     AlertDialog(
         onDismissRequest = { setShowDialog(false) },
         title = { Text(text = "Confirm Deletion") },
@@ -20,6 +22,8 @@ fun ConfirmDeletionDialog(setShowDialog: (Boolean) -> Unit, onConfirm: () -> Uni
                 onClick = {
                     onConfirm()
                     setShowDialog(false)
+
+                    Toast.makeText(context, "Habit deleted successfully", Toast.LENGTH_SHORT).show()
                 },
                 colors = ButtonDefaults.buttonColors(contentColor = Color.White, containerColor = Color.Red)
             ) {

@@ -1,5 +1,6 @@
 package com.example.habittracker.content
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -36,15 +37,19 @@ import com.example.habittracker.data.entities.Habit
 import com.example.habittracker.model.HabitViewModel
 
 @Composable
-fun HomeScreen(habitViewModel: HabitViewModel) {
+fun HomeScreen(habitViewModel: HabitViewModel, context: Context) {
     val habits = habitViewModel.habitList.collectAsState(initial = emptyList()).value
     val setShowDialog = remember { mutableStateOf(false) }
     var deletingHabitId by remember { mutableStateOf<Int?>(null) }
 
     if (setShowDialog.value) {
-        ConfirmDeletionDialog(setShowDialog = { setShowDialog.value = it }) {
-            deletingHabitId?.let { habitViewModel.deleteHabit(it) }
-        }
+        ConfirmDeletionDialog(
+            setShowDialog = { setShowDialog.value = it },
+            onConfirm = {
+                deletingHabitId?.let { habitViewModel.deleteHabit(it) }
+            },
+            context = context
+        )
     }
 
     Column(
