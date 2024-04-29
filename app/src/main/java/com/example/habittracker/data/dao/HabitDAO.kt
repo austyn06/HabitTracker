@@ -12,7 +12,9 @@ interface HabitDAO {
     @Query("SELECT * FROM habit")
     fun fetchAllHabits(): Flow<List<Habit>>
 
-    // Create a new habit
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHabit(habit: Habit)
+
+    @Query("DELETE FROM habit WHERE id = :id")
+    suspend fun deleteHabit(id: Int)
 }

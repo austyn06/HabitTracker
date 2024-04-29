@@ -22,4 +22,10 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
             habitRepository.insertHabit(habit)
         }
     }
+
+    fun deleteHabit(id: Int) {
+        viewModelScope.launch {
+            habitRepository.deleteHabit(id)
+        }
+    }
 }

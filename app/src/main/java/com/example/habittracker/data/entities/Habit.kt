@@ -19,5 +19,8 @@ data class Habit(
     val interval: String,
 
     @ColumnInfo(name = "reminder")
-    val reminder: Boolean = false
+    val reminder: Boolean = false,
+
+//     @ColumnInfo(name = "completed")
+//     val completed: Boolean = false
 )

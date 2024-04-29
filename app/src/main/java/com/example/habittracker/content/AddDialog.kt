@@ -47,7 +47,6 @@ import com.example.habittracker.R
 import com.example.habittracker.data.entities.Habit
 import com.example.habittracker.model.HabitViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) {
     var habitName by remember { mutableStateOf(TextFieldValue()) }
@@ -55,6 +54,10 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) 
     var interval by remember { mutableStateOf("") }
     var reminder by remember { mutableStateOf(false) }
     var dropdownExpanded by remember { mutableStateOf(false) }
+
+    var habitNameError by remember { mutableStateOf(false) }
+    var descriptionError by remember { mutableStateOf(false) }
+    var intervalError by remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = { setShowDialog(false) }) {
         Surface(
@@ -104,13 +107,13 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) 
                             )
                         },
                         colors = TextFieldDefaults.colors(
-                            focusedIndicatorColor = colorResource(id = R.color.darker_background),
+                            focusedIndicatorColor = if (habitNameError) colorResource(id = R.color.error) else colorResource(id = R.color.darker_background),
                             focusedLabelColor = colorResource(id = R.color.darker_background),
                             focusedTextColor = colorResource(id = R.color.black),
                             focusedContainerColor = colorResource(id = R.color.white),
                             unfocusedContainerColor = colorResource(id = R.color.white),
                             unfocusedTextColor = colorResource(id = R.color.black),
-                            unfocusedIndicatorColor = colorResource(id = R.color.black),
+                            unfocusedIndicatorColor = if (habitNameError) colorResource(id = R.color.error) else colorResource(id = R.color.black),
                             unfocusedLabelColor = colorResource(id = R.color.black)
                         )
                     )
@@ -132,13 +135,13 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) 
                             )
                         },
                         colors = TextFieldDefaults.colors(
-                            focusedIndicatorColor = colorResource(id = R.color.darker_background),
+                            focusedIndicatorColor = if (descriptionError) colorResource(id = R.color.error) else colorResource(id = R.color.darker_background),
                             focusedLabelColor = colorResource(id = R.color.darker_background),
                             focusedTextColor = colorResource(id = R.color.black),
                             focusedContainerColor = colorResource(id = R.color.white),
                             unfocusedContainerColor = colorResource(id = R.color.white),
                             unfocusedTextColor = colorResource(id = R.color.black),
-                            unfocusedIndicatorColor = colorResource(id = R.color.black),
+                            unfocusedIndicatorColor = if (descriptionError) colorResource(id = R.color.error) else colorResource(id = R.color.black),
                             unfocusedLabelColor = colorResource(id = R.color.black)
                         )
                     )
@@ -170,13 +173,13 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) 
                                 )
                             },
                             colors = TextFieldDefaults.colors(
-                                focusedIndicatorColor = colorResource(id = R.color.darker_background),
+                                focusedIndicatorColor = if (intervalError) colorResource(id = R.color.error) else colorResource(id = R.color.darker_background),
                                 focusedLabelColor = colorResource(id = R.color.darker_background),
                                 focusedTextColor = colorResource(id = R.color.black),
                                 focusedContainerColor = colorResource(id = R.color.white),
                                 unfocusedContainerColor = colorResource(id = R.color.white),
                                 unfocusedTextColor = colorResource(id = R.color.black),
-                                unfocusedIndicatorColor = colorResource(id = R.color.black),
+                                unfocusedIndicatorColor = if (intervalError) colorResource(id = R.color.error) else colorResource(id = R.color.black),
                                 unfocusedLabelColor = colorResource(id = R.color.black)
                             ),
                             readOnly = true
@@ -238,15 +241,19 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit) 
 
                     Button(
                         onClick = {
-                            val habit = Habit(
-                                name = habitName.text,
-                                description = habitDescription.text,
-                                interval = interval,
-                                reminder = reminder
-                            )
+                            if (!habitNameError && !descriptionError && !intervalError) {
+                                val habit = Habit(
+                                    name = habitName.text,
+                                    description = habitDescription.text,
+                                    interval = interval,
+                                    reminder = reminder
+                                )
 
-                            habitViewModel.insertHabit(habit)
-                            setShowDialog(false)
+                                habitViewModel.insertHabit(habit)
+                                setShowDialog(false)
+                            }
+
+
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(

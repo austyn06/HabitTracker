@@ -19,4 +19,8 @@ class HabitRepository(application: Application) {
     suspend fun insertHabit(habit: Habit) {
         habitDao.insertHabit(habit)
     }
+
+    suspend fun deleteHabit(id: Int) {
+        habitDao.deleteHabit(id)
+    }
 }

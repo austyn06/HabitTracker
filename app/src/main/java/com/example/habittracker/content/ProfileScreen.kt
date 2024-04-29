@@ -27,8 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.habittracker.R
 import com.example.habittracker.ui.theme.HabitTrackerTheme
 
@@ -99,6 +97,32 @@ fun ProfileScreen() {
         Spacer(modifier = Modifier.height(8.dp))
 
         ThemeSettingItem()
+
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = "Notifications", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = "Turn on Notifications",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Switch(
+                checked = false,
+                onCheckedChange = {},
+                colors = SwitchDefaults.colors(
+                    checkedBorderColor = Color.LightGray,
+                    checkedThumbColor = colorResource(id = R.color.white),
+                    checkedTrackColor = colorResource(id = R.color.darker_background),
+                    uncheckedBorderColor = colorResource(id = R.color.black),
+                    uncheckedThumbColor = colorResource(id = R.color.black),
+                    uncheckedTrackColor = colorResource(id = R.color.white)
+                )
+            )
+        }
     }
 }
 
