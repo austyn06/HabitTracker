@@ -23,4 +23,8 @@ class HabitRepository(application: Application) {
     suspend fun deleteHabit(id: Int) {
         habitDao.deleteHabit(id)
     }
+
+    suspend fun habitCompleted(id: Int, completed: Boolean) {
+        habitDao.habitCompleted(id, completed)
+    }
 }

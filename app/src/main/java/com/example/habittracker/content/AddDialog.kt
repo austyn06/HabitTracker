@@ -49,16 +49,12 @@ import com.example.habittracker.data.entities.Habit
 import com.example.habittracker.model.HabitViewModel
 
 @Composable
-fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, context: Context) {
+fun AddDialog(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, context: Context) {
     var habitName by remember { mutableStateOf(TextFieldValue()) }
     var habitDescription by remember { mutableStateOf(TextFieldValue()) }
-    var interval by remember { mutableStateOf("") }
+    var interval by remember { mutableStateOf("Selected Interval") }
     var reminder by remember { mutableStateOf(false) }
     var dropdownExpanded by remember { mutableStateOf(false) }
-
-    var habitNameError by remember { mutableStateOf(false) }
-    var descriptionError by remember { mutableStateOf(false) }
-    var intervalError by remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = { setShowDialog(false) }) {
         Surface(
@@ -108,13 +104,13 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, 
                             )
                         },
                         colors = TextFieldDefaults.colors(
-                            focusedIndicatorColor = if (habitNameError) colorResource(id = R.color.error) else colorResource(id = R.color.darker_background),
+                            focusedIndicatorColor = colorResource(id = R.color.darker_background),
                             focusedLabelColor = colorResource(id = R.color.darker_background),
                             focusedTextColor = colorResource(id = R.color.black),
                             focusedContainerColor = colorResource(id = R.color.white),
                             unfocusedContainerColor = colorResource(id = R.color.white),
                             unfocusedTextColor = colorResource(id = R.color.black),
-                            unfocusedIndicatorColor = if (habitNameError) colorResource(id = R.color.error) else colorResource(id = R.color.black),
+                            unfocusedIndicatorColor = colorResource(id = R.color.black),
                             unfocusedLabelColor = colorResource(id = R.color.black)
                         )
                     )
@@ -136,13 +132,13 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, 
                             )
                         },
                         colors = TextFieldDefaults.colors(
-                            focusedIndicatorColor = if (descriptionError) colorResource(id = R.color.error) else colorResource(id = R.color.darker_background),
+                            focusedIndicatorColor = colorResource(id = R.color.darker_background),
                             focusedLabelColor = colorResource(id = R.color.darker_background),
                             focusedTextColor = colorResource(id = R.color.black),
                             focusedContainerColor = colorResource(id = R.color.white),
                             unfocusedContainerColor = colorResource(id = R.color.white),
                             unfocusedTextColor = colorResource(id = R.color.black),
-                            unfocusedIndicatorColor = if (descriptionError) colorResource(id = R.color.error) else colorResource(id = R.color.black),
+                            unfocusedIndicatorColor = colorResource(id = R.color.black),
                             unfocusedLabelColor = colorResource(id = R.color.black)
                         )
                     )
@@ -153,7 +149,7 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, 
                         OutlinedTextField(
                             modifier = Modifier
                                 .clickable { dropdownExpanded = true },
-                            value = interval.ifEmpty { "Selected Interval" },
+                            value = interval,
                             onValueChange = { },
                             textStyle = TextStyle(
                                 fontWeight = FontWeight.Medium,
@@ -174,13 +170,13 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, 
                                 )
                             },
                             colors = TextFieldDefaults.colors(
-                                focusedIndicatorColor = if (intervalError) colorResource(id = R.color.error) else colorResource(id = R.color.darker_background),
+                                focusedIndicatorColor = colorResource(id = R.color.darker_background),
                                 focusedLabelColor = colorResource(id = R.color.darker_background),
                                 focusedTextColor = colorResource(id = R.color.black),
                                 focusedContainerColor = colorResource(id = R.color.white),
                                 unfocusedContainerColor = colorResource(id = R.color.white),
                                 unfocusedTextColor = colorResource(id = R.color.black),
-                                unfocusedIndicatorColor = if (intervalError) colorResource(id = R.color.error) else colorResource(id = R.color.black),
+                                unfocusedIndicatorColor = colorResource(id = R.color.black),
                                 unfocusedLabelColor = colorResource(id = R.color.black)
                             ),
                             readOnly = true
@@ -242,7 +238,9 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, 
 
                     Button(
                         onClick = {
-                            if (!habitNameError && !descriptionError && !intervalError) {
+                            if (habitName.text.isEmpty() || habitDescription.text.isEmpty() || interval == "Selected Interval") {
+                                Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
+                            } else {
                                 val habit = Habit(
                                     name = habitName.text,
                                     description = habitDescription.text,
@@ -252,11 +250,9 @@ fun AddScreen(habitViewModel: HabitViewModel, setShowDialog: (Boolean) -> Unit, 
 
                                 habitViewModel.insertHabit(habit)
                                 setShowDialog(false)
-                            } else {
-                                Toast.makeText(context, "Please fill all the fields", Toast.LENGTH_SHORT).show()
-                            }
 
-                            Toast.makeText(context, "Habit created successfully", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Habit created successfully", Toast.LENGTH_SHORT).show()
+                            }
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(

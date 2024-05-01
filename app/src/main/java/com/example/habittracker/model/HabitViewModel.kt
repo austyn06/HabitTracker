@@ -28,4 +28,10 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
             habitRepository.deleteHabit(id)
         }
     }
+
+    fun habitCompleted(id: Int, completed: Boolean) {
+        viewModelScope.launch {
+            habitRepository.habitCompleted(id, completed)
+        }
+    }
 }

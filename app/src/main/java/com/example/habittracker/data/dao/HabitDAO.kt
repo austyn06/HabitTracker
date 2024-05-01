@@ -17,4 +17,7 @@ interface HabitDAO {
 
     @Query("DELETE FROM habit WHERE id = :id")
     suspend fun deleteHabit(id: Int)
+
+    @Query("UPDATE habit SET completed = :completed WHERE id = :id")
+    suspend fun habitCompleted(id: Int, completed: Boolean)
 }

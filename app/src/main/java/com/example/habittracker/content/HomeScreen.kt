@@ -18,6 +18,8 @@ import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -64,6 +66,9 @@ fun HomeScreen(habitViewModel: HabitViewModel, context: Context) {
                 onDeleteClick = {
                     deletingHabitId = habit.id
                     setShowDialog.value = true
+                },
+                onCompletion = { completed ->
+                    habitViewModel.habitCompleted(habit.id, completed)
                 }
             )
         }
@@ -71,7 +76,7 @@ fun HomeScreen(habitViewModel: HabitViewModel, context: Context) {
 }
 
 @Composable
-fun HabitCard(habit: Habit, onDeleteClick: () -> Unit) {
+fun HabitCard(habit: Habit, onDeleteClick: () -> Unit, onCompletion: (Boolean) -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
@@ -109,13 +114,16 @@ fun HabitCard(habit: Habit, onDeleteClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(text = if (habit.reminder) "Reminder set" else "No reminder")
+                Spacer(modifier = Modifier.weight(1f))
+                Checkbox(
+                    checked = habit.completed,
+                    onCheckedChange = { onCompletion(it) },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = colorResource(id = R.color.darker_background),
+                        uncheckedColor = colorResource(id = R.color.darker_background)
+                    )
+                )
             }
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewHabitCard() {
-//    HabitCard(habit = Habit(name = "Drink Water", description = "Drink 8 glasses of water daily", interval = "Daily", reminder = true))
-//}

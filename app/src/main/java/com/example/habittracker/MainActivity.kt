@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.habittracker.content.AddScreen
+import com.example.habittracker.content.AddDialog
 import com.example.habittracker.model.HabitViewModel
 import com.example.habittracker.ui.theme.HabitTrackerTheme
 
@@ -67,7 +67,7 @@ fun MainScaffold(habitViewModel: HabitViewModel, context: Context) {
 
     val setShowDialog = remember { mutableStateOf(false) }
     if (setShowDialog.value) {
-        AddScreen(
+        AddDialog(
             habitViewModel = habitViewModel,
             setShowDialog = { setShowDialog.value = it },
             context = context
